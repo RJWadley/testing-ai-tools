@@ -47,6 +47,8 @@ export default function QuestionMachine() {
       .catch(newError => {
         setLoading(false)
         if (newError instanceof Error) setError(newError.message)
+        if (newError instanceof Response) setError(newError.statusText)
+        else setError("Unknown error")
       })
   }
 
@@ -80,7 +82,7 @@ export default function QuestionMachine() {
       </Submit>
       {loading && <Loading>Loading...</Loading>}
       {error && <ErrorText>{error}</ErrorText>}
-      {response && <Response>{response}</Response>}
+      {response && <ResponseDiv>{response}</ResponseDiv>}
     </div>
   )
 }
@@ -131,6 +133,6 @@ const Loading = styled(ErrorText)`
   color: #0a369d;
 `
 
-const Response = styled(ErrorText)`
+const ResponseDiv = styled(ErrorText)`
   background-color: #4f4f4f;
 `

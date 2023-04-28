@@ -1,10 +1,7 @@
 import { isBrowser } from "library/functions"
 import netlifyIdentity from "netlify-identity-widget"
-import { useEffect, useState } from "react"
+import { startTransition, useEffect, useState } from "react"
 
-// let isAuthenticated = false
-// let token: string | null = null
-// let user: netlifyIdentity.User | null = null
 const values: {
   isAuthenticated: boolean
   user: netlifyIdentity.User | null
@@ -49,7 +46,9 @@ export default function useNetlifyIdentity(): {
   const [internals, setInternals] = useState(values)
   useEffect(() => {
     const listener = () => {
-      setInternals(values)
+      startTransition(() => {
+        setInternals(values)
+      })
     }
     netlifyIdentity.on("login", listener)
     netlifyIdentity.on("logout", listener)
