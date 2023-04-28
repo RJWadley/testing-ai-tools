@@ -59,7 +59,9 @@ export const handler: Handler = async (event, context) => {
   const prompt: ChatCompletionRequestMessage[] = [
     {
       role: "system",
-      content: markdown,
+      content: markdown
+        // collapse multiple newlines into one
+        .replace(/\n+/g, "\n"),
     },
     {
       role: "user",

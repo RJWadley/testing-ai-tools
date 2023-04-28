@@ -2,11 +2,7 @@ import { useState } from "react"
 import styled from "styled-components"
 import useNetlifyIdentity from "utils/useNetlifyIdentity"
 
-/**
- * a component with a text box asking for your name, and a button that says "tell me a joke"
- * when you click the button, it should fetch a joke from the api "/api/jokes?name={name}"  and display it
- */
-export default function JokeMachine() {
+export default function QuestionMachine() {
   const { isAuthenticated, login, token } = useNetlifyIdentity()
   const [site, setSite] = useState("")
   const [demographic, setDemographic] = useState("")
@@ -15,9 +11,14 @@ export default function JokeMachine() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
-  const fetchJoke = () => {
+  const fetchQuestion = () => {
     if (!isAuthenticated || !token) {
       login()
+      return
+    }
+
+    if (!site || !demographic || !question) {
+      setError("Please fill out all fields")
       return
     }
 
@@ -72,7 +73,7 @@ export default function JokeMachine() {
           />
         </>
       )}
-      <Submit onClick={fetchJoke} disabled={loading}>
+      <Submit onClick={fetchQuestion} disabled={loading}>
         {isAuthenticated ? "Ask a question" : "Login"}
       </Submit>
       {loading && <Loading>Loading...</Loading>}
