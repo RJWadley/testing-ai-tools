@@ -35,9 +35,12 @@ export default function JokeMachine() {
       .then(res => {
         setLoading(false)
         if (!res.ok) throw new Error(res.statusText)
-        return res.text()
+        return res.json()
       })
-      .then(json => setResponse(json))
+      .then((json: { prompt: string; response: string }) => {
+        console.log(json)
+        return setResponse(json.prompt)
+      })
       .catch(newError => {
         setLoading(false)
         if (newError instanceof Error) setError(newError.message)

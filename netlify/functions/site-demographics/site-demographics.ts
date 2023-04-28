@@ -74,17 +74,13 @@ export const handler: Handler = async (event, context) => {
 
   const response = completion.data.choices[0]?.message?.content
 
-  if (!response) {
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: `Sorry, I'm having trouble thinking right now`,
-      }),
-    }
+  const output = {
+    prompt,
+    response,
   }
 
   return {
     statusCode: 200,
-    body: response,
+    body: JSON.stringify(output),
   }
 }
