@@ -10,7 +10,6 @@ export default function QuestionMachine() {
   const [response, setResponse] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [retryCount, setRetryCount] = useState(0)
 
   const fetchQuestion = () => {
     if (!isAuthenticated || !token) {
@@ -28,7 +27,6 @@ export default function QuestionMachine() {
     setLoading(true)
     setError("")
     setResponse("")
-    setRetryCount(0)
     fetch(
       `/api/site-demographics?url=${site}&demographic=${demographic}&question=${question}`,
       {
@@ -47,15 +45,10 @@ export default function QuestionMachine() {
         return setResponse(json.response)
       })
       .catch(newError => {
-        if (retryCount < 3) {
-          setRetryCount(retryCount + 1)
-          return fetchQuestion()
-        } else {
-          setLoading(false)
-          if (newError instanceof Error) setError(newError.message)
-          if (newError instanceof Response) setError(newError.statusText)
-          else setError("Unknown error")
-        }
+        setLoading(false)
+        if (newError instanceof Error) setError(newError.message)
+        if (newError instanceof Response) setError(newError.statusText)
+        else setError("Unknown error")
       })
   }
 
