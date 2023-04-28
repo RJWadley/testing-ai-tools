@@ -1,5 +1,6 @@
 import { Handler } from "@netlify/functions"
 import { config } from "dotenv"
+import fetch from "node-fetch"
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai"
 import Turndown from "turndown"
 
