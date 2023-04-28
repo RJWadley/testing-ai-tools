@@ -7,14 +7,14 @@ import useNetlifyIdentity from "utils/useNetlifyIdentity"
  * when you click the button, it should fetch a joke from the api "/api/jokes?name={name}"  and display it
  */
 export default function JokeMachine() {
-  const { isAuthenticated, user, login } = useNetlifyIdentity()
+  const { isAuthenticated, user, login, token } = useNetlifyIdentity()
   const [name, setName] = useState(user?.user_metadata?.full_name ?? "")
   const [joke, setJoke] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
   const fetchJoke = () => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !token) {
       login()
       return
     }
@@ -22,7 +22,11 @@ export default function JokeMachine() {
     setLoading(true)
     setError("")
     setJoke("")
-    fetch(`/api/jokes?name=${name}`)
+    fetch(`/api/jokes?name=${name}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then(res => {
         setLoading(false)
         if (!res.ok) throw new Error(res.statusText)
