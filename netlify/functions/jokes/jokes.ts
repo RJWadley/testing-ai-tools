@@ -9,8 +9,10 @@ const configuration = new Configuration({
 })
 const openai = new OpenAIApi(configuration)
 
-export const handler: Handler = async event => {
+export const handler: Handler = async (event, context) => {
   const { name } = event.queryStringParameters ?? {}
+  const { identity, user } = context.clientContext ?? {}
+  console.log(identity, user)
 
   const namePrompt = name ? ` to ${name} by name` : ""
 
@@ -27,7 +29,7 @@ export const handler: Handler = async event => {
     messages: prompt,
   })
 
-  const joke = completion.data.choices[0]?.message
+  const joke = completion.data.choices[0]?.message?.content
 
   if (!joke) {
     return {
@@ -40,8 +42,6 @@ export const handler: Handler = async event => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify({
-      message: joke.content,
-    }),
+    body: joke,
   }
 }

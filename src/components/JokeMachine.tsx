@@ -7,9 +7,9 @@ import styled from "styled-components"
  */
 export default function JokeMachine() {
   const [name, setName] = useState("")
-  const [joke, setJoke] = useState("This is a joek")
+  const [joke, setJoke] = useState("")
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("This is an error")
+  const [error, setError] = useState("")
 
   const fetchJoke = () => {
     setLoading(true)
@@ -38,7 +38,6 @@ export default function JokeMachine() {
       <Submit onClick={fetchJoke} disabled={loading}>
         Tell me a joke
       </Submit>
-      <Loading>Loading...</Loading>
       {loading && <Loading>Loading...</Loading>}
       {error && <ErrorText>{error}</ErrorText>}
       {joke && <Joke>{joke}</Joke>}
