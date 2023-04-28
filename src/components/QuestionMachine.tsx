@@ -7,9 +7,11 @@ import useNetlifyIdentity from "utils/useNetlifyIdentity"
  * when you click the button, it should fetch a joke from the api "/api/jokes?name={name}"  and display it
  */
 export default function JokeMachine() {
-  const { isAuthenticated, user, login, token } = useNetlifyIdentity()
-  const [name, setName] = useState(user?.user_metadata?.full_name ?? "")
-  const [joke, setJoke] = useState("")
+  const { isAuthenticated, login, token } = useNetlifyIdentity()
+  const [site, setSite] = useState("")
+  const [demographic, setDemographic] = useState("")
+  const [question, setQuestion] = useState("")
+  const [response, setResponse] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -21,18 +23,21 @@ export default function JokeMachine() {
 
     setLoading(true)
     setError("")
-    setJoke("")
-    fetch(`/api/jokes?name=${name}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    setResponse("")
+    fetch(
+      `/api/site-demographics?site=${site}&demographic=${demographic}&question=${question}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
       .then(res => {
         setLoading(false)
         if (!res.ok) throw new Error(res.statusText)
         return res.text()
       })
-      .then(json => setJoke(json))
+      .then(json => setResponse(json))
       .catch(newError => {
         setLoading(false)
         if (newError instanceof Error) setError(newError.message)
@@ -41,21 +46,35 @@ export default function JokeMachine() {
 
   return (
     <div>
-      <h1>Jokes</h1>
+      <h1>Questions</h1>
       {isAuthenticated && (
-        <TextInput
-          type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          placeholder="Enter your name"
-        />
+        <>
+          <TextInput
+            type="text"
+            value={site}
+            onChange={e => setSite(e.target.value)}
+            placeholder="Enter your site"
+          />
+          <TextInput
+            type="text"
+            value={demographic}
+            onChange={e => setDemographic(e.target.value)}
+            placeholder="Enter your demographic"
+          />
+          <TextInput
+            type="text"
+            value={question}
+            onChange={e => setQuestion(e.target.value)}
+            placeholder="Enter your question"
+          />
+        </>
       )}
       <Submit onClick={fetchJoke} disabled={loading}>
-        {isAuthenticated ? "Tell me a joke" : "Login"}
+        {isAuthenticated ? "Ask a question" : "Login"}
       </Submit>
       {loading && <Loading>Loading...</Loading>}
       {error && <ErrorText>{error}</ErrorText>}
-      {joke && <Joke>{joke}</Joke>}
+      {response && <Response>{response}</Response>}
     </div>
   )
 }
@@ -63,11 +82,11 @@ export default function JokeMachine() {
 const TextInput = styled.input`
   display: block;
   border: 1px solid black;
-  margin: 0 auto;
+  margin: 10px auto;
   padding: 10px;
   border-radius: 10px;
   background-color: white;
-  width: 200px;
+  width: 400px;
 
   ::placeholder {
     color: #999;
@@ -75,7 +94,7 @@ const TextInput = styled.input`
 `
 
 const Submit = styled.button`
-  width: 200px;
+  width: 400px;
   background: #0a369d;
   color: white;
   padding: 10px;
@@ -106,6 +125,6 @@ const Loading = styled(ErrorText)`
   color: #0a369d;
 `
 
-const Joke = styled(ErrorText)`
+const Response = styled(ErrorText)`
   background-color: #4f4f4f;
 `

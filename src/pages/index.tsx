@@ -1,13 +1,19 @@
 import JokeMachine from "components/JokeMachine"
+import QuestionMachine from "components/QuestionMachine"
 import Seo from "components/Seo"
 
 import { Filler } from "./404"
 
 export default function IndexPage() {
   return (
-    <Filler>
-      <JokeMachine />
-    </Filler>
+    <>
+      <Filler>
+        <QuestionMachine />
+      </Filler>
+      <Filler>
+        <JokeMachine />
+      </Filler>
+    </>
   )
 }
 

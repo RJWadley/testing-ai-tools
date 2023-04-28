@@ -18,6 +18,7 @@
     "@react-three/drei": "^9.65.5",
     "@react-three/fiber": "^8.12.2",
     "@types/three": "^0.150.2",
+    "@types/turndown": "^5.0.1",
     "dotenv": "^16.0.3",
     "gatsby": "^5.9.0",
     "gatsby-link": "^5.9.0",
@@ -39,7 +40,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.10",
-    "the-new-css-reset": "^1.8.4"
+    "the-new-css-reset": "^1.8.4",
+    "turndown": "^7.1.2"
   },
   "devDependencies": {
     "@types/netlify-identity-widget": "^1.9.3",
