@@ -11,8 +11,15 @@ const openai = new OpenAIApi(configuration)
 
 export const handler: Handler = async (event, context) => {
   const { name } = event.queryStringParameters ?? {}
-  const { identity, user } = context.clientContext ?? {}
-  console.log(identity, user)
+  const { user } = context.clientContext ?? {}
+
+  // if the user is not logged in, return a 401 unauthorized
+  if (!user) {
+    return {
+      statusCode: 401,
+      body: "You must be logged in to use this endpoint",
+    }
+  }
 
   const namePrompt = name ? ` to ${name} by name in a creative way` : ""
 
