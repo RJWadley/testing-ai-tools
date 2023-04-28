@@ -50,12 +50,20 @@ export const handler: Handler = async (event, context) => {
 
   const prompt: ChatCompletionRequestMessage[] = [
     {
-      role: "user",
+      role: "assistant",
       content: markdown,
     },
     {
+      role: "user",
+      content: `Nice website. I belong to the following demographic: ${demographic}.`,
+    },
+    {
+      role: "assistant",
+      content: question,
+    },
+    {
       role: "system",
-      content: `You are a user belonging to the following demographic: ${demographic}. You are trying to find the answer the following question: ${question}.`,
+      content: "Predict what the user's answer will be:",
     },
   ]
 
