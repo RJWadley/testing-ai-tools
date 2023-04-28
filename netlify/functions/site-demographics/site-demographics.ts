@@ -44,9 +44,17 @@ export const handler: Handler = async (event, context) => {
     }
   }
 
-  const site = await fetch(url).then(res => res.text())
+  const text = await fetch(url).then(res => res.text())
 
-  const markdown = turndownService.turndown(site)
+  const markdown = turndownService.turndown(
+    // only keep the content of the body
+    (text.match(/<body[^>]*>([\S\s]*)<\/body>/m)?.[1] ?? "")
+      // filter out script and style tags
+      .replace(/<script[^>]*>[\S\s]*?<\/script>/g, "")
+      .replace(/<style[^>]*>[\S\s]*?<\/style>/g, "")
+      // filter out all href, src, srcset, and style attributes
+      .replace(/(href|src|srcset|style)="[^"]*"/g, "")
+  )
 
   const prompt: ChatCompletionRequestMessage[] = [
     {
