@@ -1,0 +1,6 @@
+# set up redirect /api/* /.netlify/functions/:splat 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
