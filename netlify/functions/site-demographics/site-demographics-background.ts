@@ -46,7 +46,7 @@ export const handler: Handler = async (event, context) => {
 
   const text = await fetch(url).then(res => res.text())
 
-  const markdown = turndownService.turndown(
+  const onlyRealText =
     // only keep the content of the body
     (text.match(/<body[^>]*>([\S\s]*)<\/body>/m)?.[1] ?? "")
       // filter out script and style tags
@@ -54,14 +54,23 @@ export const handler: Handler = async (event, context) => {
       .replace(/<style[^>]*>[\S\s]*?<\/style>/g, "")
       // filter out all href, src, srcset, and style attributes
       .replace(/(href|src|srcset|style)="[^"]*"/g, "")
-  )
+      // collapse multiple newlines into one
+      .replace(/\n+/g, "\n")
+
+  const metaDescription =
+    text.match(/<meta[^>]*name="description"[^>]*>/)?.[0] ?? ""
+
+  let markdown
+  try {
+    markdown = turndownService.turndown(onlyRealText)
+  } catch (error) {
+    markdown = onlyRealText
+  }
 
   const prompt: ChatCompletionRequestMessage[] = [
     {
       role: "system",
-      content: markdown
-        // collapse multiple newlines into one
-        .replace(/\n+/g, "\n"),
+      content: `${metaDescription}\n${markdown}`,
     },
     {
       role: "user",
