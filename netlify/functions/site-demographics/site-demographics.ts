@@ -58,20 +58,15 @@ export const handler: Handler = async (event, context) => {
 
   const prompt: ChatCompletionRequestMessage[] = [
     {
-      role: "assistant",
+      role: "system",
       content: markdown,
     },
     {
       role: "user",
-      content: `Nice website. I belong to the following demographic: ${demographic}.`,
-    },
-    {
-      role: "assistant",
-      content: question,
-    },
-    {
-      role: "system",
-      content: "Predict what the user's answer will be:",
+      content: `Read the above website. Make up a user that first
+      in the ${demographic} demographic. Make up lots of very specific 
+      details about their life, as if you were writing a fanfiction. Then, imagine what they would respond if
+      you asked them, "${question}". Give this imaginary persons response as a direct quote.`,
     },
   ]
 
