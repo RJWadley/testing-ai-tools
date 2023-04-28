@@ -41,12 +41,14 @@ export default function JokeMachine() {
 
   return (
     <div>
-      <TextInput
-        type="text"
-        value={name}
-        onChange={e => setName(e.target.value)}
-        placeholder="Enter your name"
-      />
+      {isAuthenticated && (
+        <TextInput
+          type="text"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          placeholder="Enter your name"
+        />
+      )}
       <Submit onClick={fetchJoke} disabled={loading}>
         {isAuthenticated ? "Tell me a joke" : "Login"}
       </Submit>
