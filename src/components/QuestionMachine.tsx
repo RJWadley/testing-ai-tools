@@ -22,6 +22,8 @@ export default function QuestionMachine() {
       return
     }
 
+    console.log("TOKEN", token)
+
     setLoading(true)
     setError("")
     setResponse("")
