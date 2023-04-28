@@ -14,9 +14,13 @@ export const handler: Handler = async (event, context) => {
   const { identity, user } = context.clientContext ?? {}
   console.log(identity, user)
 
-  const namePrompt = name ? ` to ${name} by name` : ""
+  const namePrompt = name ? ` to ${name} by name in a creative way` : ""
 
   const prompt: ChatCompletionRequestMessage[] = [
+    {
+      role: "user",
+      content: "Hi!",
+    },
     {
       role: "system",
       content: `Say hi${namePrompt}, and generate a unique joke, one that's never been told before`,

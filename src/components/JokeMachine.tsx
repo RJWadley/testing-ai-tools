@@ -14,6 +14,7 @@ export default function JokeMachine() {
   const fetchJoke = () => {
     setLoading(true)
     setError("")
+    setJoke("")
     fetch(`/api/jokes?name=${name}`)
       .then(res => {
         setLoading(false)
