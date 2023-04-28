@@ -28,7 +28,7 @@ export default function QuestionMachine() {
     setError("")
     setResponse("")
     fetch(
-      `/api/site-demographics-background?url=${site}&demographic=${demographic}&question=${question}`,
+      `/api/site-demographics?url=${site}&demographic=${demographic}&question=${question}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
