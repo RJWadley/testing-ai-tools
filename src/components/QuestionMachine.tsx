@@ -39,7 +39,7 @@ export default function JokeMachine() {
       })
       .then((json: { prompt: string; response: string }) => {
         console.log(json)
-        return setResponse(json.prompt)
+        return setResponse(json.response)
       })
       .catch(newError => {
         setLoading(false)

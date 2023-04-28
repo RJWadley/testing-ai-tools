@@ -65,8 +65,10 @@ export const handler: Handler = async (event, context) => {
       role: "user",
       content: `Read the above website. Make up a user that first
       in the ${demographic} demographic. Make up lots of very specific 
-      details about their life, as if you were writing a fanfiction. Then, imagine what they would respond if
-      you asked them, "${question}". Give this imaginary persons response as a direct quote.`,
+      details about their life, as if you were writing a fanfiction. They have 
+      no prior knowledge of the above website. Then, imagine what they would respond if
+      you asked them, "${question}". Give this imaginary persons response 
+      as a direct quote.`.replaceAll(/\s+/g, " "),
     },
   ]
 
