@@ -1,4 +1,5 @@
 import netlifyIdentity from "netlify-identity-widget"
+import { useEffect, useState } from "react"
 
 // let isAuthenticated = false
 // let token: string | null = null
@@ -41,5 +42,19 @@ export default function useNetlifyIdentity(): {
   login: () => void
   token: string | null
 } {
-  return values
+  // detect when the object changes and schedule a re-render
+  const [internals, setInternals] = useState(values)
+  useEffect(() => {
+    const listener = () => {
+      setInternals(values)
+    }
+    netlifyIdentity.on("login", listener)
+    netlifyIdentity.on("logout", listener)
+    return () => {
+      netlifyIdentity.off("login", listener)
+      netlifyIdentity.off("logout", listener)
+    }
+  }, [])
+
+  return internals
 }
