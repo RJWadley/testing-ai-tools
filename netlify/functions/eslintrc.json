@@ -1,7 +1,0 @@
-{
-  "extends": "reform-collective",
-  "env": {
-    "browser": false,
-    "node": true
-  }
-}
