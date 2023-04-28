@@ -36,7 +36,7 @@ export default function Header() {
 
   return (
     <Wrapper>
-      <h1 ref={text}>Header</h1>
+      <h1 ref={text}>Joke Machine</h1>
     </Wrapper>
   )
 }
