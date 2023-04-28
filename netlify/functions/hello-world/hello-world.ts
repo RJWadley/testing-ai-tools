@@ -10,12 +10,14 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration)
 
 export const handler: Handler = async event => {
-  const { name = "stranger" } = event.queryStringParameters ?? {}
+  const { name } = event.queryStringParameters ?? {}
+
+  const namePrompt = name ? ` to ${name} by name` : ""
 
   const prompt: ChatCompletionRequestMessage[] = [
     {
       role: "system",
-      content: `Say hi to ${name} by name, and generate a unique joke, one that's never been told before`,
+      content: `Say hi${namePrompt}, and generate a unique joke, one that's never been told before`,
     },
   ]
 
@@ -31,7 +33,7 @@ export const handler: Handler = async event => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: `Sorry, ${name}, I couldn't think of a joke for you`,
+        message: `Sorry, I couldn't think of a joke for you`,
       }),
     }
   }
