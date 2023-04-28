@@ -25,7 +25,7 @@ export default function JokeMachine() {
     setError("")
     setResponse("")
     fetch(
-      `/api/site-demographics?site=${site}&demographic=${demographic}&question=${question}`,
+      `/api/site-demographics?url=${site}&demographic=${demographic}&question=${question}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
