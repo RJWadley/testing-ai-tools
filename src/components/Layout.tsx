@@ -6,7 +6,7 @@ import Scroll from "components/Scroll"
 import { useBackButton } from "library/Loader/TransitionUtils"
 import { useTrackPageReady } from "library/pageReady"
 import useCSSHeightVariables from "library/useCssHeightVariables"
-import styled from "styled-components"
+import styled, { createGlobalStyle, css } from "styled-components"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -21,6 +21,7 @@ export default function Layout({ children }: LayoutProps) {
     <>
       <GreenTransition />
       <BlueTransition />
+      <GlobalStyles />
       <Scroll>
         <Header />
         <Main>{children}</Main>
@@ -33,3 +34,11 @@ export default function Layout({ children }: LayoutProps) {
 const Main = styled.main`
   overflow-x: hidden;
 `
+
+const globalStyles = css`
+  * {
+    font-family: sans-serif;
+  }
+`
+
+const GlobalStyles = createGlobalStyle`${globalStyles}`

@@ -1,3 +1,4 @@
+import JokeMachine from "components/JokeMachine"
 import Seo from "components/Seo"
 import { graphql, PageProps } from "gatsby"
 import UniversalLink from "library/Loader/UniversalLink"
@@ -11,6 +12,9 @@ export default function IndexPage({
 
   return (
     <>
+      <Filler>
+        <JokeMachine />
+      </Filler>
       <Filler>
         <h1>Welcome to Your Gatsby Site</h1>
         <br />
