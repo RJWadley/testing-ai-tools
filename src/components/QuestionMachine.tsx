@@ -1,38 +1,6 @@
 import { useState } from "react"
 import styled from "styled-components"
-import Turndown from "turndown"
 import useNetlifyIdentity from "utils/useNetlifyIdentity"
-
-const turndownService = new Turndown()
-
-async function fetchSiteContent(url: string) {
-  const text = await fetch(`https://cors.mrtrapidroute.com/?${url}`).then(res =>
-    res.text()
-  )
-
-  const onlyRealText =
-    // only keep the content of the body
-    (text.match(/<body[^>]*>([\S\s]*)<\/body>/m)?.[1] ?? "")
-      // filter out script and style tags
-      .replace(/<script[^>]*>[\S\s]*?<\/script>/g, "")
-      .replace(/<style[^>]*>[\S\s]*?<\/style>/g, "")
-      // filter out all href, src, srcset, and style attributes
-      .replace(/(href|src|srcset|style)="[^"]*"/g, "")
-      // collapse multiple newlines into one
-      .replace(/\n+/g, "\n")
-
-  const metaDescription =
-    text.match(/<meta[^>]*name="description"[^>]*>/)?.[0] ?? ""
-
-  let markdown
-  try {
-    markdown = turndownService.turndown(onlyRealText)
-  } catch (error) {
-    markdown = onlyRealText
-  }
-
-  return `${metaDescription}\n\n${markdown}`
-}
 
 export default function QuestionMachine() {
   const { isAuthenticated, login, token } = useNetlifyIdentity()
@@ -43,7 +11,7 @@ export default function QuestionMachine() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
-  const fetchQuestion = async () => {
+  const fetchQuestion = () => {
     if (!isAuthenticated || !token) {
       login()
       return
@@ -56,13 +24,11 @@ export default function QuestionMachine() {
 
     console.log("TOKEN", token)
 
-    const siteContent = await fetchSiteContent(site)
-
     setLoading(true)
     setError("")
     setResponse("")
     fetch(
-      `/api/site-demographics?content=${siteContent}&demographic=${demographic}&question=${question}`,
+      `/api/site-demographics?url=${site}&demographic=${demographic}&question=${question}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -111,15 +77,7 @@ export default function QuestionMachine() {
           />
         </>
       )}
-      <Submit
-        onClick={() => {
-          fetchQuestion().catch(error_ => {
-            console.error(error_)
-            setError("Unknown error")
-          })
-        }}
-        disabled={loading}
-      >
+      <Submit onClick={fetchQuestion} disabled={loading}>
         {isAuthenticated ? "Ask a question" : "Login"}
       </Submit>
       {loading && <Loading>Loading...</Loading>}
