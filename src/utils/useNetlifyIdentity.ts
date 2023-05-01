@@ -46,9 +46,11 @@ export default function useNetlifyIdentity(): {
   const [internals, setInternals] = useState(values)
   useEffect(() => {
     const listener = () => {
-      startTransition(() => {
-        setInternals(values)
-      })
+      setTimeout(() => {
+        startTransition(() => {
+          setInternals(values)
+        })
+      }, 1)
     }
     netlifyIdentity.on("login", listener)
     netlifyIdentity.on("logout", listener)
