@@ -48,7 +48,7 @@ export default function useNetlifyIdentity(): {
     const listener = () => {
       setTimeout(() => {
         startTransition(() => {
-          setInternals(values)
+          setInternals({ ...values })
         })
       }, 1)
     }
